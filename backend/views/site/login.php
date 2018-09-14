@@ -83,14 +83,16 @@ $this->title = 'Login';
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="../../index2.html" method="post">
+     <?php $form = ActiveForm::begin() ?>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="text" class="form-control" placeholder="Username" name="LoginForm[username]">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        <p><?=$model->getFirstError('username')?></p>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" class="form-control" placeholder="Password" name="LoginForm[password]">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <p><?=$model->getFirstError('password')?></p>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -108,7 +110,7 @@ $this->title = 'Login';
         </div>
         <!-- /.col -->
       </div>
-    </form>
+    <?php ActiveForm::end(); ?>
 
     <div class="social-auth-links text-center">
       <p>- OR -</p>

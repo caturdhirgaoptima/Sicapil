@@ -42,8 +42,11 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '@/beranda' => 'verifikator/index',
+                ''
             ],
         ],
+        'defaultRoute' => 'site/backendlogin',
        
     ],
     'params' => $params,

@@ -6,7 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-
+use common\components\MyHelper;
 /**
  * User model
  *
@@ -51,8 +51,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['user_username', 'user_password', 'user_nama', 'user_status', 'user_authKey', 'id_pelayanan','user_email'], 'required'],
+            [['user_level',''], 'string'],
+            [['unit_id'], 'integer'],
+            [['user_username'], 'string', 'max' => 25],
+            [['user_password', 'user_authKey'], 'string', 'max' => 250],
+            [['user_nama'], 'string', 'max' => 50],
+            [['id_pelayanan'], 'exist', 'skipOnError' => true, 'targetClass' => PelayananModel::className(), 'targetAttribute' => ['id_pelayanan' => 'id']],
         ];
     }
 
@@ -61,7 +66,11 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        $user = self::find()->where(["user_id"=>$id])->one();
+       if(!count($user)){
+            return 0;
+       }
+       return new static($user);
     }
 
     /**
@@ -80,7 +89,11 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        $user = self::find()->where(['user_username' => $username])->one();
+        if(!count($user))
+            return null;
+
+        return new static($user);
     }
 
     /**
@@ -121,25 +134,25 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+   public function getId()
     {
-        return $this->getPrimaryKey();
+        return $this->user_id;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getAuthKey()
     {
-        return $this->auth_key;
+        return $this->user_authKey;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function validateAuthKey($authKey)
     {
-        return $this->getAuthKey() === $authKey;
+        return $this->user_authKey === $authKey;
     }
 
     /**
@@ -150,7 +163,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        //kalo ada enkripsi masukkan disini
+        return MyHelper::validatePassword($password, $this->user_password);
     }
 
     /**
@@ -160,7 +174,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        
+        $this->user_password = MyHelper::hashPassword($password);
     }
 
     /**
@@ -168,7 +183,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateAuthKey()
     {
-        $this->auth_key = Yii::$app->security->generateRandomString();
+        $this->user_authKey = Yii::$app->security->generateRandomString();
     }
 
     /**
