@@ -57,7 +57,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['user_username'], 'string', 'max' => 25],
             [['user_password', 'user_authKey'], 'string', 'max' => 250],
             [['user_nama'], 'string', 'max' => 50],
-            [['id_pelayanan'], 'exist', 'skipOnError' => true, 'targetClass' => PelayananModel::className(), 'targetAttribute' => ['id_pelayanan' => 'id']],
+            [['id_pelayanan'], 'exist', 'skipOnError' => true, 'targetClass' => LayananModel::className(), 'targetAttribute' => ['id_pelayanan' => 'id']],
         ];
     }
 
@@ -175,7 +175,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function setPassword($password)
     {
         
-        $this->user_password = MyHelper::hashPassword($password);
+        return MyHelper::hashPassword($password);
     }
 
     /**
@@ -183,7 +183,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function generateAuthKey()
     {
-        $this->user_authKey = Yii::$app->security->generateRandomString();
+        return Yii::$app->security->generateRandomString();
     }
 
     /**

@@ -43,7 +43,11 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '@/beranda' => 'verifikator/index',
-                ''
+                '$/beranda' => 'superadmin/beranda/index',
+                '$/<controller:(layanan|user)>' => 'superadmin/<controller>/index',
+                '$/<controller:(layanan|user)>/create' => 'superadmin/<controller>/create',
+                '$/<controller:(layanan|user)>/<id:\d+>' => 'superadmin/<controller>/view',
+                '$/<controller:(layanan|user)>/<action:(update|delete)>/<id:\d+>/' => 'superadmin/<controller>/<action>',
             ],
         ],
         'defaultRoute' => 'site/backendlogin',
