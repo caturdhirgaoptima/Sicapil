@@ -79,4 +79,9 @@ class UserModel extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TableUrusanlayananUser::className(), ['id_user' => 'user_id']);
     }
+
+
+      public function hak_akses(){
+        return "<center><a href='auth-assignment?id=".$this->user_id."'><span class='fa fa-lock'></span></a></center>";
+    }
 }

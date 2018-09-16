@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\UserModel */
 
-$this->title = 'User';
+$this->title = 'Hak Akses';
 
 ?>
 <!-- Content Wrapper. Contains page content -->
@@ -19,7 +19,7 @@ $this->title = 'User';
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-users"></i>Master User</a></li>
-        <li class="active">User</li>
+        <li class="active">Hak Akses</li>
       </ol>
     </section>
 
@@ -31,13 +31,13 @@ $this->title = 'User';
         <div class="col-md-7">
                  <div class="box box-warning">
                     <div class="box-header with-border">
-                      <h3 class="box-title">Detail user</h3>
+                      <h3 class="box-title">Detail Hak Akses</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                             <p>
-                        <?= Html::a('Update', ['update', 'id' => $model->user_id], ['class' => 'btn btn-primary']) ?>
-                        <?= Html::a('Delete', ['delete', 'id' => $model->user_id], [
+                      <p>
+                        <?= Html::a('Update', ['update', 'id' => $model->name], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Delete', ['delete', 'id' => $model->name], [
                             'class' => 'btn btn-danger',
                             'data' => [
                                 'confirm' => 'Are you sure you want to delete this item?',
@@ -49,17 +49,10 @@ $this->title = 'User';
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
-                            'user_username',
-                            'user_name',
-                            'user_email:email',
-                            'user_level',
-                            [
-                                'attribute' => 'id_layanan',
-                                'value' => function($model){
-                                    return $model->layanan->nama_layanan;
-                                }
-                            ],
+                            'name',
                             
+                            'description:ntext',
+                           
                         ],
                     ]) ?>
 

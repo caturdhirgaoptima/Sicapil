@@ -3,46 +3,39 @@
 namespace backend\controllers\superadmin;
 
 use Yii;
-use backend\models\LayananModel;
-use backend\models\LayananSearch;
+use backend\models\UrusanModel;
+use backend\models\UrusanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\web\ForbiddenHttpException;
+
 /**
- * LayananController implements the CRUD actions for LayananModel model.
+ * UrusanController implements the CRUD actions for UrusanModel model.
  */
-class LayananController extends Controller
+class UrusanController extends Controller
 {
     /**
      * @inheritdoc
      */
-       public function behaviors()
+    public function behaviors()
     {
-         return [
-                'access' => [
-                    'class' => AccessControl::className(),
-                    'rules' => [
-                        [
-                            'allow' => true,
-                            'roles' => ['@'],
-                            'matchCallback' => function($rule, $action) {
-                                    return Yii::$app->user->can('superadmin');
-                                }
-                        ],
-                    ],
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
-            ];
+            ],
+        ];
     }
 
     /**
-     * Lists all LayananModel models.
+     * Lists all UrusanModel models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new LayananSearch();
+        $searchModel = new UrusanSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,7 +45,7 @@ class LayananController extends Controller
     }
 
     /**
-     * Displays a single LayananModel model.
+     * Displays a single UrusanModel model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -65,19 +58,15 @@ class LayananController extends Controller
     }
 
     /**
-     * Creates a new LayananModel model.
+     * Creates a new UrusanModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new LayananModel();
+        $model = new UrusanModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', [
-                    'message' => "Data Berhasil Ditambah",
-                    'title' => 'Tambah Layanan',
-                ]); 
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -87,7 +76,7 @@ class LayananController extends Controller
     }
 
     /**
-     * Updates an existing LayananModel model.
+     * Updates an existing UrusanModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -98,10 +87,6 @@ class LayananController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', [
-                    'message' => "Data Berhasil Diubah",
-                    'title' => 'Update Layanan',
-                ]); 
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -111,7 +96,7 @@ class LayananController extends Controller
     }
 
     /**
-     * Deletes an existing LayananModel model.
+     * Deletes an existing UrusanModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -119,26 +104,21 @@ class LayananController extends Controller
      */
     public function actionDelete($id)
     {
-        if($this->findModel($id)->delete()){
-            Yii::$app->getSession()->setFlash('success', [
-                    'message' => "Data Berhasil Dihapus",
-                    'title' => 'Hapus Layanan',
-                ]); 
-        }
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the LayananModel model based on its primary key value.
+     * Finds the UrusanModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return LayananModel the loaded model
+     * @return UrusanModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = LayananModel::findOne($id)) !== null) {
+        if (($model = UrusanModel::findOne($id)) !== null) {
             return $model;
         }
 

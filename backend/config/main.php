@@ -44,11 +44,20 @@ return [
             'rules' => [
                 '@/beranda' => 'verifikator/index',
                 '$/beranda' => 'superadmin/beranda/index',
-                '$/<controller:(layanan|user)>' => 'superadmin/<controller>/index',
-                '$/<controller:(layanan|user)>/create' => 'superadmin/<controller>/create',
-                '$/<controller:(layanan|user)>/<id:\d+>' => 'superadmin/<controller>/view',
-                '$/<controller:(layanan|user)>/<action:(update|delete)>/<id:\d+>/' => 'superadmin/<controller>/<action>',
+                '$/master-user/<controller:(user|auth-item)>' => 'superadmin/<controller>/index',
+                '$/master-user/<controller:(user|auth-item)>/create' => 'superadmin/<controller>/create',
+                '$/master-user/<controller:(user|auth-item)>/<id:\d+>' => 'superadmin/<controller>/view',
+                '$/master-user/<controller:(user|auth-item)>/<action:(update|delete)>/<id:\d+>/' => 'superadmin/<controller>/<action>',
+
+                '$/master-user/<controller:(auth-assignment)>' => 'superadmin/<controller>/akses',
+                
+                '$/master-layanan/<controller:(layanan|urusan)>' => 'superadmin/<controller>/index',
+                '$/master-layanan/<controller:(layanan|urusan)>/create' => 'superadmin/<controller>/create',
+                '$/master-layanan/<controller:(layanan|urusan)>/<id:\d+>' => 'superadmin/<controller>/view',
+                '$/master-layanan/<controller:(layanan|urusan)>/<action:(update|delete)>/<id:\d+>/' => 'superadmin/<controller>/<action>',
+             
             ],
+
         ],
         'defaultRoute' => 'site/backendlogin',
        

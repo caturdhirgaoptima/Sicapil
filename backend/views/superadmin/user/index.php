@@ -49,7 +49,7 @@ $this->title = 'User';
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
-                        'user_id',
+                    
                         'user_username',
                         'user_name',
                         'user_email:email',
@@ -57,6 +57,13 @@ $this->title = 'User';
                         [
                             'attribute' => 'id_layanan',
                             'value' => 'layanan.nama_layanan'
+                        ],
+                         [
+                            'label' =>'Hak Akses',
+                            'format' => 'raw',
+                            'value' => function($model){
+                                         return $model->hak_akses();
+                                       }
                         ],
                         //'id_layanan',
 

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\UserModel */
 
-$this->title = 'Layanan';
+$this->title = 'Urusan';
 ?>
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -18,7 +18,7 @@ $this->title = 'Layanan';
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-users"></i>Master Layanan</a></li>
-        <li class="active">Layanan</li>
+        <li class="active">Urusan</li>
       </ol>
     </section>
 
@@ -30,7 +30,7 @@ $this->title = 'Layanan';
         <div class="col-md-7">
          		 <div class="box box-warning">
 		            <div class="box-header with-border">
-		              <h3 class="box-title">Update Layanan</h3>
+		              <h3 class="box-title">Update Urusan</h3>
 		            </div>
 		            <!-- /.box-header -->
 		            <div class="box-body">

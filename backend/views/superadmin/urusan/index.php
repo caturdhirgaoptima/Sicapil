@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Layanan';
+$this->title = 'Urusan';
 
 ?>
 
@@ -23,7 +23,7 @@ $this->title = 'Layanan';
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-users"></i>Master Layanan</a></li>
-        <li class="active">Layanan</li>
+        <li class="active">Urusan</li>
       </ol>
     </section>
 
@@ -34,13 +34,13 @@ $this->title = 'Layanan';
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Tabel Layanan</h3>
+              <h3 class="box-title">Tabel Urusan</h3>
 
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
                  <p>
-                    <?= Html::a('Tambah Layanan', ['create'], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a('Tambah Urusan', ['create'], ['class' => 'btn btn-success']) ?>
                 </p>
 
                 <?= GridView::widget([
@@ -50,14 +50,7 @@ $this->title = 'Layanan';
                         ['class' => 'yii\grid\SerialColumn'],
 
                        
-                        'nama_layanan',
-                        [
-                            'label' => 'Urusan',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                return $model->urusan_layanan();
-                            }
-                        ],
+                        'nama_urusan',
 
                         ['class' => 'yii\grid\ActionColumn'],
                     ],

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Layanan';
+$this->title = 'Hak Akses';
 
 ?>
 
@@ -19,11 +19,11 @@ $this->title = 'Layanan';
     <section class="content-header">
       <h1>
         <?=$this->title?>
-        <small>Master Layanan</small>
+        <small>Master User</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-users"></i>Master Layanan</a></li>
-        <li class="active">Layanan</li>
+        <li><a href="#"><i class="fa fa-users"></i>Master User</a></li>
+        <li class="active">Hak Akses</li>
       </ol>
     </section>
 
@@ -34,13 +34,13 @@ $this->title = 'Layanan';
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Tabel Layanan</h3>
+              <h3 class="box-title">Tabel Hak Akses</h3>
 
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
                  <p>
-                    <?= Html::a('Tambah Layanan', ['create'], ['class' => 'btn btn-success']) ?>
+                    <?= Html::a('Tambah Hak Akses', ['create'], ['class' => 'btn btn-success']) ?>
                 </p>
 
                 <?= GridView::widget([
@@ -48,16 +48,10 @@ $this->title = 'Layanan';
                     'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-
-                       
-                        'nama_layanan',
-                        [
-                            'label' => 'Urusan',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                return $model->urusan_layanan();
-                            }
-                        ],
+                        'name',
+                        'description:ntext',
+                        //'created_at',
+                        //'updated_at',
 
                         ['class' => 'yii\grid\ActionColumn'],
                     ],

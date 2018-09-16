@@ -50,14 +50,19 @@ class LayananModel extends \yii\db\ActiveRecord
      */
     public function getAuthUsers()
     {
-        return $this->hasMany(AuthUser::className(), ['id_layanan' => 'id']);
+        return $this->hasMany(UserModel::className(), ['id_layanan' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTableUrusanlayanans()
+    public function getUrusanlayanans()
     {
-        return $this->hasMany(TableUrusanlayanan::className(), ['id_layanan' => 'id']);
+        return $this->hasMany(UrusanlayananModel::className(), ['id_layanan' => 'id']);
+    }
+
+
+     public function urusan_layanan(){
+        return "<center><a href='urusan-layanan?id=".$this->id."'><span class='fa fa-archive'></span></a></center>";
     }
 }

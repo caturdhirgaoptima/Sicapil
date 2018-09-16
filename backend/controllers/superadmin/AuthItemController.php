@@ -3,20 +3,17 @@
 namespace backend\controllers\superadmin;
 
 use Yii;
-use backend\models\UserModel;
-use backend\models\UserSearch;
+use backend\models\AuthItemModel;
+use backend\models\AuthItemSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\User;
-use yii\helpers\ArrayHelper;
-use backend\models\LayananModel;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 /**
- * UserController implements the CRUD actions for UserModel model.
+ * AuthItemController implements the CRUD actions for AuthItemModel model.
  */
-class UserController extends Controller
+class AuthItemController extends Controller
 {
     /**
      * @inheritdoc
@@ -40,12 +37,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all UserModel models.
+     * Lists all AuthItemModel models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new AuthItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,8 +52,8 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single UserModel model.
-     * @param integer $id
+     * Displays a single AuthItemModel model.
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -68,74 +65,55 @@ class UserController extends Controller
     }
 
     /**
-     * Creates a new UserModel model.
+     * Creates a new AuthItemModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        if(!Yii::$app->user->can('create-user'))
-             throw new ForbiddenHttpException;
-        
-        $layanan = LayananModel::find()->all();
-        $listData=ArrayHelper::map($layanan,'id','nama_layanan');
-        $model = new UserModel();
-        if ($model->load(Yii::$app->request->post())) {
-            $date = date("Ymdhis");
-            $model->user_id = uniqid($date);
-            $model->user_authKey = User::generateAuthKey();
-            $model->user_password = User::setPassword($model->user_password);
-            if($model->save()){
-                 Yii::$app->getSession()->setFlash('success', [
+        $model = new AuthItemModel();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', [
                     'message' => "Data Berhasil Ditambah",
-                    'title' => 'Tambah User',
-                ]);  
-                return $this->redirect(['view', 'id' => $model->user_id]);
-            }
-            
+                    'title' => 'Tambah Hak Akses',
+                ]); 
+            return $this->redirect(['view', 'id' => $model->name]);
         }
 
         return $this->render('create', [
-            'layanan' => $listData,
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing UserModel model.
+     * Updates an existing AuthItemModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
-        $layanan = LayananModel::find()->all();
-        $listData=ArrayHelper::map($layanan,'id','nama_layanan');
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->user_authKey = User::generateAuthKey();
-            $model->user_password = User::setPassword($model->user_password);
-            if($model->save()){
-                 Yii::$app->getSession()->setFlash('success', [
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('success', [
                     'message' => "Data Berhasil Diubah",
-                    'title' => 'Update User',
+                    'title' => 'Update Hak Akses',
                 ]); 
-             }
-            return $this->redirect(['view', 'id' => $model->user_id]);
+            return $this->redirect(['view', 'id' => $model->name]);
         }
 
         return $this->render('update', [
-            'layanan' => $listData,
             'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing UserModel model.
+     * Deletes an existing AuthItemModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -144,27 +122,26 @@ class UserController extends Controller
         if($this->findModel($id)->delete()){
             Yii::$app->getSession()->setFlash('success', [
                     'message' => "Data Berhasil Dihapus",
-                    'title' => 'Hapus User',
-                ]);  
+                    'title' => 'Hapus Hak Akses',
+                ]); 
         }
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the UserModel model based on its primary key value.
+     * Finds the AuthItemModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return UserModel the loaded model
+     * @param string $id
+     * @return AuthItemModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = UserModel::findOne($id)) !== null) {
+        if (($model = AuthItemModel::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

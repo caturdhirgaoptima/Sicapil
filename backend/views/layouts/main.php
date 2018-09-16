@@ -131,13 +131,13 @@ BackendAsset::register($this);
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="<?=$this->title=='User'?'active':''?>"><a href="<?=Url::base(true).'/$/user'?>"><i class="fa fa-circle-o"></i> User</a></li>
-            <li class="<?=$this->title=='Hak Akses'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Hak Akses</a></li>
-             <li class="<?=$this->title=='Hak Akses'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Hak Akses User</a></li>
+            <li class="<?=$this->title=='User'?'active':''?>"><a href="<?=Url::base(true).'/$/master-user/user'?>"><i class="fa fa-circle-o"></i> User</a></li>
+            <li class="<?=$this->title=='Hak Akses'?'active':''?>"><a href="<?=Url::base(true).'/$/master-user/auth-item'?>"><i class="fa fa-circle-o"></i> Hak Akses</a></li>
+             
           </ul>
         </li>
 
-         <li class="treeview <?=$this->title=='Layanan'||$this->title=='Urusan'||$this->title=='Urusan Layanan'?'active':''?>">
+         <li class="treeview <?=$this->title=='Layanan'||$this->title=='Urusan'?'active':''?>">
           <a href="#">
             <i class="fa fa-address-card"></i>
             <span>Master Layanan</span>
@@ -146,9 +146,9 @@ BackendAsset::register($this);
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="<?=$this->title=='Layanan'?'active':''?>"><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> Layanan</a></li>
-            <li class="<?=$this->title=='Urusan'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Urusan</a></li>
-            <li class="<?=$this->title=='Urusan Layanan'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Urusan Layanan</a></li>
+            <li class="<?=$this->title=='Layanan'?'active':''?>"><a href="<?=Url::base(true).'/$/master-layanan/layanan'?>"><i class="fa fa-circle-o"></i> Layanan</a></li>
+            <li class="<?=$this->title=='Urusan'?'active':''?>"><a href="<?=Url::base(true).'/$/master-layanan/urusan'?>"><i class="fa fa-circle-o"></i> Urusan</a></li>
+            
           </ul>
         </li>
 
