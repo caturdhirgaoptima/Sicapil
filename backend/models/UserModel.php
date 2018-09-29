@@ -77,7 +77,7 @@ class UserModel extends \yii\db\ActiveRecord
      */
     public function getTableUrusanlayananUsers()
     {
-        return $this->hasMany(TableUrusanlayananUser::className(), ['id_user' => 'user_id']);
+        return $this->hasMany(UrusanlayananUserModel::className(), ['id_user' => 'user_id']);
     }
 
 

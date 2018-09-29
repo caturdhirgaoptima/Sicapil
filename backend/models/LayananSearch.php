@@ -56,7 +56,7 @@ class LayananSearch extends LayananModel
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query->where("nama_layanan != 'master'");
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,

@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
         'bower_components/Ionicons/css/ionicons.min.css',
         'dist/css/AdminLTE.min.css',
         'plugins/iCheck/square/blue.css',
+        'css/lightbox.min.css',
     ];
     public $js = [
         'bower_components/jquery/dist/jquery.min.js',

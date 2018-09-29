@@ -61,7 +61,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        echo "hello";
+         if (!Yii::$app->user->isGuest) {
+
+            if(Yii::$app->user->identity['user_level'] == 'superadmin')
+                return $this->redirect(Url::base().'/$/beranda');
+            else if(Yii::$app->user->identity['user_level'] == 'verifikator')
+                return $this->redirect(Url::base().'/@/beranda');
+        }
         return $this->render('index');
     }
 

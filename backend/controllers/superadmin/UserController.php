@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\LayananModel;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use backend\models\AuthAssignmentModel;
 /**
  * UserController implements the CRUD actions for UserModel model.
  */
@@ -62,6 +63,9 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('view-user'))
+             throw new ForbiddenHttpException;
+             
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -85,14 +89,19 @@ class UserController extends Controller
             $model->user_id = uniqid($date);
             $model->user_authKey = User::generateAuthKey();
             $model->user_password = User::setPassword($model->user_password);
-            if($model->save()){
+
+            $model2 = new AuthAssignmentModel();
+            $model2->item_name = $model->user_level;
+            $model2->user_id = $model->user_id;
+
+            if($model->save() and $model2->save()){
                  Yii::$app->getSession()->setFlash('success', [
                     'message' => "Data Berhasil Ditambah",
                     'title' => 'Tambah User',
                 ]);  
+           
                 return $this->redirect(['view', 'id' => $model->user_id]);
             }
-            
         }
 
         return $this->render('create', [
@@ -110,6 +119,10 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+
+        if(!Yii::$app->user->can('update-user'))
+             throw new ForbiddenHttpException;
+
         $layanan = LayananModel::find()->all();
         $listData=ArrayHelper::map($layanan,'id','nama_layanan');
         $model = $this->findModel($id);
@@ -141,6 +154,10 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+
+        if(!Yii::$app->user->can('delete-user'))
+             throw new ForbiddenHttpException;
+
         if($this->findModel($id)->delete()){
             Yii::$app->getSession()->setFlash('success', [
                     'message' => "Data Berhasil Dihapus",

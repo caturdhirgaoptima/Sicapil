@@ -161,8 +161,8 @@ BackendAsset::register($this);
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="<?=$this->title=='Dokumen'?'active':''?>"><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> Dokumen</a></li>
-            <li class="<?=$this->title=='Set Dokumen'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Set Dokumen</a></li>
+            <li class="<?=$this->title=='Dokumen'?'active':''?>"><a href="<?=Url::base(true).'/$/master-dokumen/dokumen'?>"><i class="fa fa-circle-o"></i> Dokumen</a></li>
+            <li class="<?=$this->title=='Set Dokumen'?'active':''?>"><a href="<?=Url::base(true).'/$/master-dokumen/set-dokumen'?>"><i class="fa fa-circle-o"></i> Set Dokumen</a></li>
           </ul>
         </li>
 
@@ -175,9 +175,8 @@ BackendAsset::register($this);
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="<?=$this->title=='Formulir'?'active':''?>"><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> Formulir</a></li>
-            <li class="<?=$this->title=='Data Formulir'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Data Formulir</a></li>
-            <li class="<?=$this->title=='Set Formulir'?'active':''?>"><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Set Formulir</a></li>
+            <li class="<?=$this->title=='Formulir'||$this->title=='Data Formulir'?'active':''?>"><a href="<?=Url::base(true).'/$/master-formulir/formulir'?>"><i class="fa fa-circle-o"></i> Formulir</a></li>
+            <li class="<?=$this->title=='Set Formulir'?'active':''?>"><a href="<?=Url::base(true).'/$/master-formulir/set-formulir'?>"><i class="fa fa-circle-o"></i> Set Formulir</a></li>
           </ul>
         </li>
        

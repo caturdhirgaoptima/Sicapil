@@ -59,6 +59,9 @@ class LayananController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('view-layanan'))
+             throw new ForbiddenHttpException;
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -71,6 +74,8 @@ class LayananController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('create-layanan'))
+             throw new ForbiddenHttpException;
         $model = new LayananModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -95,6 +100,9 @@ class LayananController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('update-layanan'))
+             throw new ForbiddenHttpException;
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -119,6 +127,9 @@ class LayananController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can('delete-layanan'))
+             throw new ForbiddenHttpException;
+
         if($this->findModel($id)->delete()){
             Yii::$app->getSession()->setFlash('success', [
                     'message' => "Data Berhasil Dihapus",

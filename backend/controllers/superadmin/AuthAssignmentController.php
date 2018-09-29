@@ -41,6 +41,8 @@ class AuthAssignmentController extends Controller
     }
 
     public function actionAkses(){
+      
+
         $id= Yii::$app->request->get('id');
         $user = UserModel::find()->where(['user_id' => $id])->one();
         $akses = AuthItemModel::find()->all();
@@ -62,7 +64,7 @@ class AuthAssignmentController extends Controller
                 $model->save();
             }
             Yii::$app->getSession()->setFlash('success', [
-                    'message' => "Hak Akses User",
+                    'message' => "Berhail Memperbarui Hak Akses User",
                     'title' => 'Hak Akses',
                 ]);  
 

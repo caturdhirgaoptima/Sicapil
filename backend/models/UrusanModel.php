@@ -47,9 +47,9 @@ class UrusanModel extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTableUrusanlayanans()
+    public function getUrusanlayanans()
     {
-        return $this->hasMany(TableUrusanlayanan::className(), ['id_urusan' => 'id']);
+        return $this->hasMany(UrusanlayananModel::className(), ['id_urusan' => 'id']);
     }
 
 

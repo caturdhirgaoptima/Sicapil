@@ -22,7 +22,7 @@ $this->title = 'Layanan';
         <small>Master Layanan</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-users"></i>Master Layanan</a></li>
+        <li><a href="#"><i class="fa fa-address-card"></i>Master Layanan</a></li>
         <li class="active">Layanan</li>
       </ol>
     </section>
@@ -52,7 +52,7 @@ $this->title = 'Layanan';
                        
                         'nama_layanan',
                         [
-                            'label' => 'Urusan',
+                            'label' => 'Pengaturan',
                             'format' => 'raw',
                             'value' => function($model){
                                 return $model->urusan_layanan();

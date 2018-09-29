@@ -18,7 +18,7 @@ $this->title = 'Layanan';
         <small>Master Layanan</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-users"></i>Master Layanan</a></li>
+        <li><a href="#"><i class="fa fa-address-card"></i>Master Layanan</a></li>
         <li class="active">Layanan</li>
       </ol>
     </section>

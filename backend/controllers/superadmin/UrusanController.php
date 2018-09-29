@@ -8,7 +8,7 @@ use backend\models\UrusanSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\filters\AccessControl;
 /**
  * UrusanController implements the CRUD actions for UrusanModel model.
  */
@@ -17,16 +17,22 @@ class UrusanController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+      public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+         return [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                            'matchCallback' => function($rule, $action) {
+                                    return Yii::$app->user->can('superadmin');
+                                }
+                        ],
+                    ],
                 ],
-            ],
-        ];
+            ];
     }
 
     /**
@@ -52,6 +58,9 @@ class UrusanController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('view-urusan'))
+             throw new ForbiddenHttpException;
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -64,6 +73,8 @@ class UrusanController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('create-urusan'))
+             throw new ForbiddenHttpException;
         $model = new UrusanModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -84,6 +95,9 @@ class UrusanController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('update-urusan'))
+             throw new ForbiddenHttpException;
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -104,6 +118,9 @@ class UrusanController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can('delete-urusan'))
+             throw new ForbiddenHttpException;
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

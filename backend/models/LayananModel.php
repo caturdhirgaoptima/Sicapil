@@ -63,6 +63,6 @@ class LayananModel extends \yii\db\ActiveRecord
 
 
      public function urusan_layanan(){
-        return "<center><a href='urusan-layanan?id=".$this->id."'><span class='fa fa-archive'></span></a></center>";
+        return "<center><a href='urusan-layanan/".$this->id."'><span class='fa fa-archive'></span></a></center>";
     }
 }
