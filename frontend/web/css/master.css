@@ -1,0 +1,34 @@
+@font-face {
+    font-family: logo;
+    src: url(sifonn.otf);
+}
+
+#tes{
+  font-size: 30px;
+  font-family: logo;
+}
+
+.footer{
+  position: relative;
+  background-color: #F8F9FA;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
+/* @media only screen and (min-width: 600px) {
+
+  .footer{
+    position: fixed;
+  }
+
+}
+
+@media only screen and (min-width: 768px) {
+
+  .footer{
+    position: fixed;
+  }
+
+} */
