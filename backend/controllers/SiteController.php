@@ -6,7 +6,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
-
+use common\models\User;
+use yii\helpers\Url;
 /**
  * Site controller
  */
@@ -60,7 +61,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        echo "hello";
+         if (!Yii::$app->user->isGuest) {
+
+            if(Yii::$app->user->identity['user_level'] == 'superadmin')
+                return $this->redirect(Url::base().'/$/beranda');
+            else if(Yii::$app->user->identity['user_level'] == 'verifikator')
+                return $this->redirect(Url::base().'/@/beranda');
+        }
         return $this->render('index');
     }
 
@@ -69,23 +76,53 @@ class SiteController extends Controller
      *
      * @return string
      */
+
     public function actionLogin()
     {
+
+        
+
+        $this->layout = 'login';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
+        $this->layout = "login";
+        if (!Yii::$app->user->isGuest) {
 
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            if(Yii::$app->user->identity['user_level'] == 'superadmin')
+                return $this->redirect(Url::base().'/$/beranda');
+            else if(Yii::$app->user->identity['user_level'] == 'verifikator')
+                return $this->redirect(Url::base().'/@/beranda');
         }
+
+        
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post())) {         
+            if($model->rememberMe==1)
+                $model->rememberMe=0;
+            else
+                $model->rememberMe=1;
+            if($model->login()){
+                    if(Yii::$app->user->identity['user_level'] == 'superadmin')
+                        return $this->redirect(Url::base().'/$/beranda');
+                    else if(Yii::$app->user->identity['user_level'] == 'verifikator')
+                        return $this->redirect(Url::base().'/@/beranda');
+              }
+
+              
+
+            }
+            
+     
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
+
+
 
     /**
      * Logout action.

@@ -3,14 +3,15 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use backend\assets\AppAsset;
+use backend\assets\BackendAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
-
-AppAsset::register($this);
+use yii\helpers\Url;
+use kartik\growl\Growl;
+BackendAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -20,61 +21,189 @@ AppAsset::register($this);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title>SiCapil | <?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
+    <?php foreach(Yii::$app->session->getAllFlashes() as $message){ ?>
+        <?php
+            echo Growl::widget([
+                    'type' => (!empty($message['type'])) ? $message['type']: 'success',
+                    'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Pemberitahuan',
+                    'icon' => (!empty($message['icon'])) ? $message['icon'] : 'glyphicon glyphicon-ok',
+                    'body' => (!empty($message['message'])) ? Html::encode($message['message']) : 'Tidak ada pesan',
+                    'delay' => 1,
+                    'showSeparator' => true,
+                    'pluginOptions' => [
+                        'delay' => (!empty($message['duration'])) ? $message['duration'] : '3000',
+                        'placement' => [
+                            'from' => (!empty($message['positionY'])) ? $message['positionY'] : 'top',
+                            'align' => (!empty($message['positionX'])) ? $message['positionX'] : 'right',
+                        ]
+                    ],
+                    'useAnimation' =>true
+                ]);
+
+        ?>
+<?php } ?>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
+    <div class="wrapper">
+        <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>S</b>C</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">SiCapil</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+         
+     
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="<?=Url::base(true).'/images/user.png'?>" class="user-image" alt="User Image">
+              <span class="hidden-xs"><?=Yii::$app->user->identity['user_name']?></span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="<?=Url::base(true).'/images/user.png'?>" class="img-circle" alt="User Image">
+
+                <p>
+                  <?=Yii::$app->user->identity['user_name']?>
+                  <small><?=Yii::$app->user->identity['user_level']?></small>
+                </p>
+              </li>
+             
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profil</a>
+                </div>
+                <div class="pull-right">
+               
+                   <?=Html::beginForm(['/site/logout'], 'post')?>
+                                <button type="submit" class="btn btn-default btn-flat">
+                                    Keluar
+                                </button>
+                         <?=Html::endForm()?>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+     
+     
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MENU UTAMA</li>
+      
+        <li class="<?=$this->title=='Beranda'?'active':''?>">
+          <a href="<?=Url::base(true).'/$/beranda'?>">
+            <i class="fa fa-home"></i> <span>Beranda</span>
+          </a>
+        </li>
+        <li class="treeview <?=$this->title=='User'||$this->title=='Hak Akses'?'active':''?>">
+          <a href="#">
+            <i class="fa fa-users"></i>
+            <span>Master User</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="<?=$this->title=='User'?'active':''?>"><a href="<?=Url::base(true).'/$/master-user/user'?>"><i class="fa fa-circle-o"></i> User</a></li>
+            <li class="<?=$this->title=='Hak Akses'?'active':''?>"><a href="<?=Url::base(true).'/$/master-user/auth-item'?>"><i class="fa fa-circle-o"></i> Hak Akses</a></li>
+             
+          </ul>
+        </li>
+
+         <li class="treeview <?=$this->title=='Layanan'||$this->title=='Urusan'?'active':''?>">
+          <a href="#">
+            <i class="fa fa-address-card"></i>
+            <span>Master Layanan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="<?=$this->title=='Layanan'?'active':''?>"><a href="<?=Url::base(true).'/$/master-layanan/layanan'?>"><i class="fa fa-circle-o"></i> Layanan</a></li>
+            <li class="<?=$this->title=='Urusan'?'active':''?>"><a href="<?=Url::base(true).'/$/master-layanan/urusan'?>"><i class="fa fa-circle-o"></i> Urusan</a></li>
+            
+          </ul>
+        </li>
+
+         <li class="treeview <?=$this->title=='Dokumen'||$this->title=='Set Dokumen'?'active':''?>">
+          <a href="#">
+            <i class="fa fa-book"></i>
+            <span>Master Dokumen</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="<?=$this->title=='Dokumen'?'active':''?>"><a href="<?=Url::base(true).'/$/master-dokumen/dokumen'?>"><i class="fa fa-circle-o"></i> Dokumen</a></li>
+            <li class="<?=$this->title=='Set Dokumen'?'active':''?>"><a href="<?=Url::base(true).'/$/master-dokumen/set-dokumen'?>"><i class="fa fa-circle-o"></i> Set Dokumen</a></li>
+          </ul>
+        </li>
+
+         <li class="treeview <?=$this->title=='Formulir'||$this->title=='Data Formulir'||$this->title=='Set Formulir'?'active':''?>">
+          <a href="#">
+            <i class="fa fa-file"></i>
+            <span>Master Formulir</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="<?=$this->title=='Formulir'||$this->title=='Data Formulir'?'active':''?>"><a href="<?=Url::base(true).'/$/master-formulir/formulir'?>"><i class="fa fa-circle-o"></i> Formulir</a></li>
+            <li class="<?=$this->title=='Set Formulir'?'active':''?>"><a href="<?=Url::base(true).'/$/master-formulir/set-formulir'?>"><i class="fa fa-circle-o"></i> Set Formulir</a></li>
+          </ul>
+        </li>
+       
+       
+      
+       
+      
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+ 
         <?= $content ?>
-    </div>
-</div>
+   
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+    <footer class="main-footer">
+  
+    <strong>Copyright &copy; 2018 PT. CDO
+  </footer>
+    
     </div>
-</footer>
+
 
 <?php $this->endBody() ?>
 </body>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
 </html>
 <?php $this->endPage() ?>
