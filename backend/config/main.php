@@ -46,7 +46,7 @@ return [
                 '@/verifikasi' => 'verifikator/verifikasi/index',
                 '@/verifikasi/do/<id:\d+>' => 'verifikator/verifikasi/update',
                 '@/verifikasi/detail/<id:\d+>' => 'verifikator/verifikasi/view',
-                 '@/verifikasi/download/<id:\d+>' => 'verifikator/verifikasi/download',
+                 '@/verifikasi/download/<id:\w+>' => 'verifikator/verifikasi/download',
 
 
                 '$/beranda' => 'superadmin/beranda/index',

@@ -103,7 +103,7 @@ class UrusanlayananUserModel extends \yii\db\ActiveRecord
         
         if($this->status=="verifikasi")
          return "<center><span class='fa fa-check'></span></center>";
-     else if($this->status=="ditolak")
+     else if($this->status=="tolak")
         return "<center><span class='fa fa-remove'></span></center>";
     else if($this->status=="pending")
         return "<center><span class='fa fa-minus'></span></center>";

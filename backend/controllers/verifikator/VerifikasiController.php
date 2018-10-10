@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\DokumenUserModel;
 use backend\models\FormulirModel;
+use backend\models\DokumenModel;
 /**
  * VerifikasiController implements the CRUD actions for UrusanlayananUserModel model.
  */
@@ -58,6 +59,8 @@ class VerifikasiController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    /* 
     public function actionView($id)
     {
         $model =$this->findModel($id);
@@ -66,6 +69,8 @@ class VerifikasiController extends Controller
                     ->where(['id_urusanlayanan' => $model->id_urusanlayanan])->all();
       
         if(Yii::$app->request->post()){
+
+            var_dump(Yii::$app->request->post());die;
             $cek = Yii::$app->request->post('cek');
             $alasan = Yii::$app->request->post('alasan');
          
@@ -120,7 +125,77 @@ class VerifikasiController extends Controller
             'dokumen' => $dokumen,
         ]);
     }
+    */
 
+
+    public function actionView($id)
+    {
+        $model =$this->findModel($id);
+        $dokumen = DokumenUserModel::find()->where(['id_urusanlayanan_user' => $model->id])->all();
+     
+        if(Yii::$app->request->post()){
+
+            $cek = Yii::$app->request->post('cek');
+            $alasan = Yii::$app->request->post('alasan');
+          
+            if(in_array('tolak', $cek['dokumen'])){
+                $message = "
+                    <p>Mohon maaf sdr. ".$model->user->user_name.", Keperluan Anda dengan kode #".$model->id." Ditolak.</p>
+                    <p>Hal ini Dikarenakan : </p>";
+                $alas = "<ul>";
+                 foreach($dokumen as $dok){
+                    $alas.= "<li>".$dok->dokumen->nama_dokumen." : ".@$alasan['dokumen'][$dok->dokumen->id]."</li>";
+                } 
+                $alas.="</ul>";
+                $message.=$alas;
+                $jadinya = "tolak";
+            }else{
+                $message = "
+                    <p>Selamat, keperluan sdr.".$model->user->user_name." dengan kode #".$model->id.", keperluan Anda telah diverifikasi</p>
+                    <p>Berkas Anda sudah diverifikasi. Silahkan bawa berkas asli ke kantor Disdukcapil</p>
+                    ";
+                $jadinya = "verifikasi";
+
+            }
+            $model->status = $jadinya;
+            $model->komentar = $message;
+            if($model->save()){
+               
+                 foreach($dokumen as $dok){
+                
+                    $dokusr = DokumenUserModel::find()->andWhere(['id_urusanlayanan_user' => $model->id])->andWhere(['id_dokumen' =>$dok->dokumen->id])->one();
+                    $dokusr->status = $cek['dokumen'][$dok->dokumen->id]=='tolak'?0:1;
+                    var_dump($dokusr);echo "<br><br>";
+                    $dokusr->save();
+                 }
+             
+                Yii::$app->mailer->compose('layouts/html', ['content' => $message])
+                ->setFrom('idadi70@gmail.com')
+                ->setTo($model->user->user_email)
+                ->setSubject('SiCapil - Konfirmasi Keperluan #'.$model->id)
+                ->send();
+
+                Yii::$app->getSession()->setFlash('success', [
+                        'message' => "Status Berhasil Diubah",
+                        'title' => 'Verifikasi Transaksi',
+                    ]);  
+            }else{
+                Yii::$app->getSession()->setFlash('failed', [
+                         'type' => 'danger',
+                        'icon' => 'glyphicon glyphicon-remove',     
+                        'message' => "Status Gagal Diubah",
+                        'title' => 'Verifikasi Transaksi',
+                    ]);  
+            }
+            return $this->redirect(['index']);
+       
+        }
+        $this->layout = "main-ver";
+        return $this->render('view', [
+            'model' => $model,
+            'dokumen' => $dokumen,
+        ]);
+    }
     /**
      * Creates a new UrusanlayananUserModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -141,8 +216,9 @@ class VerifikasiController extends Controller
 
 
     public function actionDownload($id){
-    	$dok = DokumenUserModel::find()->where(['id' => $id])->one();
-    	 $path = Yii::getAlias('@frontend').'/web/images/upload/'.$dok->file_dokumen;
+    	$dok = DokumenUserModel::find()->where(['id_dokumen' => $id])->one();
+   
+    	 $path = Yii::getAlias('@frontend').'/web/uploads/'.$dok->file_dokumen;
     	 var_dump($path);
     	 if (file_exists($path)) {
 	        return Yii::$app->response->sendFile($path);

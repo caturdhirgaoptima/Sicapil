@@ -29,8 +29,9 @@ $this->title = 'Verifikasi';
 
     <!-- Main content -->
     <section class="content">
-    
+     
       <div class="row">
+       
         <div class="col-md-8">
                  <div class="box box-warning">
                     <div class="box-header with-border">
@@ -62,7 +63,10 @@ $this->title = 'Verifikasi';
                     </div>
             <!-- /.box-body -->
           </div>
-            <?php $form = ActiveForm::begin(); ?>
+    
+        
+          <!--
+          
             <?php $i=0; foreach($model->urusanlayanan->formulirUrusanlayanans as $form){ ?>
               <div class="box box-warning">
                     <div class="box-header with-border">
@@ -73,7 +77,7 @@ $this->title = 'Verifikasi';
                         <input type="radio" name="cek[<?=$form->formulir->nama_formulir?>]" value="tolak" class="cek"><i class="fa fa-times"></i>
                       </div>
                     </div>
-                    <!-- /.box-header -->
+                 
                     <div class="box-body">
                         <?php
                             $label = UserFormulirValueModel::find()->joinWith('dataformulir', 'userFormulirValue.id_dataformulir = dataformulir.id')
@@ -98,42 +102,48 @@ $this->title = 'Verifikasi';
                       <label>Alasan</label>
                       <textarea class="form-control" name="alasan[<?=$form->formulir->nama_formulir?>]"></textarea>
                     </div>
-            <!-- /.box-body -->
+           
           </div>
           <?php $i++; } ?>
 
+            -->
 
-          
+
               <div class="box box-warning">
                     <div class="box-header with-border">
-                      <h3 class="box-title">Dokumen</h3>
-                       <div style="float: right;">
-                        <input type="radio" name="cek[dokumen]" value="terima" class="cek"><i class="fa fa-check"></i>
-                        &nbsp &nbsp
-                        <input type="radio" name="cek[dokumen]" value="tolak" class="cek"><i class="fa fa-times"></i>
-                      </div>
+                      <h3 class="box-title">Dokumen Pendukung</h3>
+                       
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-
-                      <?php foreach($dokumen as $dok){ ?>
-
-                      <a class="example-image-link" href="<?=Yii::$app->params['front'].'/'.$dok->file_dokumen?>" data-lightbox="example-1" style="margin-right: 15px" data-title="<?=$dok->dokumen->nama_dokumen?>"><img class="example-image" src="<?=Yii::$app->params['front'].'/'.$dok->file_dokumen?>" alt="image-1" width="40" height="60" /></a>
-                      <?php } ?>
-                      
+          <?php ActiveForm::begin(); ?>
+                      <?php $i=0; foreach($dokumen as $dok){ ?>
+                      <div class="form-group" style="padding: 10px">
+                        <label style="width: 100%"><?=$dok->dokumen->nama_dokumen?></label>
+                     
+                      <a href="<?=Url::base(true).'/@/verifikasi/download/'.$dok->id_dokumen?>" target="_blank" class="btn btn-success">Download</a>
+                            <div style="float: right;">
+                                  <input type="radio" name="cek[dokumen][<?=$dok->dokumen->id?>]" value="terima" class="cek"><i class="fa fa-check"></i>
+                                  &nbsp &nbsp
+                                  <input type="radio" name="cek[dokumen][<?=$dok->dokumen->id?>]" value="tolak" class="cek"><i class="fa fa-times"></i>
+                            </div>
+                           <div class="form-group alasan" style="display: none">
+                              <label>Alasan</label>
+                              <textarea class="form-control isi-alasan" name="alasan[dokumen][<?=$dok->dokumen->id?>]"></textarea>
+                        </div>
+                      </div>
+                      <?php $i++; } ?>
                     </div>
-                     <div class="form-group box-body alasan" style="display: none">
-                      <label>Alasan</label>
-                      <textarea class="form-control" name="alasan[dokumen]"></textarea>
-                    </div>
+                    
             <!-- /.box-body -->
           </div>
-      
-        </div>
-      </div>
-       <div class="form-group">
+          <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
+      </div>
+        </div>
+      </div>
+       
       <?php ActiveForm::end(); ?>
       
     </section>
@@ -152,9 +162,15 @@ $this->registerJsFile(
             $(".cek").on('change',function(){
                 var cek = $(this).val();
                 if(cek=="tolak"){
-                    $div = $(this).parent().parent().parent();
+                    $div = $(this).parent().parent();
                     $alasan = $div.find('.alasan');
+                    $isi = $alasan.find(".isi-alasan");
+                    $isi.val("");
                     $alasan.prop('style','');
+                }else{
+                    $div = $(this).parent().parent();
+                    $alasan = $div.find('.alasan');
+                    $alasan.prop('style','display: none');
                 }
             });
             

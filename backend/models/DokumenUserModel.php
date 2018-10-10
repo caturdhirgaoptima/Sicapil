@@ -33,6 +33,7 @@ class DokumenUserModel extends \yii\db\ActiveRecord
         return [
             [['id_urusanlayanan_user', 'id_dokumen', 'file_dokumen'], 'required'],
             [['id_dokumen'], 'integer'],
+            [['status'], 'safe'],
             [['file_dokumen','id_urusanlayanan_user'], 'string'],
             [['id_dokumen'], 'exist', 'skipOnError' => true, 'targetClass' => DokumenModel::className(), 'targetAttribute' => ['id_dokumen' => 'id']],
             [['id_urusanlayanan_user'], 'exist', 'skipOnError' => true, 'targetClass' => UrusanlayananUserModel::className(), 'targetAttribute' => ['id_urusanlayanan_user' => 'id']],

@@ -35,14 +35,12 @@ class UserModel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'user_username', 'user_password', 'user_name', 'user_email', 'user_level', 'user_authKey', 'id_layanan'], 'required'],
-            [['user_id'], 'string', 'max' => 30],
+            [['user_username', 'user_password', 'user_name', 'user_email', 'user_level', 'user_authKey', 'id_layanan'], 'required'],
             [['user_level'], 'string'],
             [['user_username'], 'string', 'max' => 35],
             [['user_password'], 'string', 'max' => 255],
             [['user_name', 'user_email'], 'string', 'max' => 50],
             [['user_authKey'], 'string', 'max' => 250],
-            [['user_id'], 'unique'],
             [['id_layanan'], 'exist', 'skipOnError' => true, 'targetClass' => LayananModel::className(), 'targetAttribute' => ['id_layanan' => 'id']],
         ];
     }
